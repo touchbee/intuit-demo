@@ -207,8 +207,7 @@
 			children = (
 				F8B363182204C5F700AE2A01 /* URL+IntuitDemo.swift */,
 			);
-			name = Extensions;
-			path = "New Group";
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 		F8B3630B2203AF0F00AE2A01 /* View Controllers */ = {
