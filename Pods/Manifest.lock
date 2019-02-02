@@ -1,0 +1,20 @@
+PODS:
+  - Alamofire (4.8.1)
+  - SwiftyBeaver (1.6.1)
+
+DEPENDENCIES:
+  - Alamofire (~> 4.8)
+  - SwiftyBeaver
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - Alamofire
+    - SwiftyBeaver
+
+SPEC CHECKSUMS:
+  Alamofire: 16ce2c353fb72865124ddae8a57c5942388f4f11
+  SwiftyBeaver: ccfcdf85a04d429f1633f668650b0ce8020bda3a
+
+PODFILE CHECKSUM: 93f58864959d5a6dddc0fe2288a43d89b4e64cbd
+
+COCOAPODS: 1.5.3
