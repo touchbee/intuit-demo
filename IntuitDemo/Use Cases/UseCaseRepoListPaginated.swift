@@ -13,11 +13,16 @@ class UseCaseRepoListPaginated {
     typealias GetResult = ((_ repos: [Repo]) -> ())?
     typealias ReposChanged = (_ repos: [Repo]) -> ()
     
+    var sortedByName: (_ : Repo, _ : Repo) -> Bool = { $0.name.lowercased() < $1.name.lowercased() }
+    var sortFunc: (_ : Repo, _ : Repo) -> Bool
+    
+    
     let pageSize: Int
     var pageIndex: Int = 0
     var canLoadMore = true
     let repoRepository: RepoRepositoryProtocol
     var repos: [Repo] = [] {
+        
         didSet {
             reposChanged?(repos)
         }
@@ -27,8 +32,9 @@ class UseCaseRepoListPaginated {
     
     init(pageSize: Int, repoRepository: RepoRepositoryProtocol) {
         self.pageSize = pageSize
+        self.sortFunc = sortedByName
         self.repoRepository = repoRepository
-        self.repos = repoRepository.repos
+        self.repos = repoRepository.repos.sorted(by: sortFunc)
     }
     
     func firstPage(finished: GetResult = nil) {
@@ -37,7 +43,7 @@ class UseCaseRepoListPaginated {
         
         self.repoRepository.firstReposPage(pageSize: pageSize) { [weak self, pageSize] (repos) in
             
-            guard pageSize > 0 && pageSize <= 100 else {
+            guard let sortFunc = self?.sortFunc, pageSize > 0 && pageSize <= 100 else {
                 Logger.error("Expexting page size between 1 and 100")
                 finished?([])
                 return
@@ -47,7 +53,7 @@ class UseCaseRepoListPaginated {
                 self?.canLoadMore = false
             }
             
-            self?.repos = repos
+            self?.repos = repos.sorted(by:sortFunc)
             self?.pageIndex = 1
             finished?(repos)
         }
@@ -61,7 +67,7 @@ class UseCaseRepoListPaginated {
         
         self.repoRepository.nextReposPage(pageSize: pageSize) { [weak self, pageSize] (repos) in
             
-            guard pageSize > 0 && pageSize <= 100 else {
+            guard let sortFunc = self?.sortFunc, let allRepos = self?.repos, pageSize > 0 && pageSize <= 100 else {
                 Logger.error("Expexting page size between 1 and 100")
                 finished?([])
                 return
@@ -70,8 +76,8 @@ class UseCaseRepoListPaginated {
             if repos.count == 0 || repos.count < pageSize {
                 self?.canLoadMore = false
             }
-            
-            self?.repos += repos
+           
+            self?.repos = (allRepos + repos).sorted(by:sortFunc)
             self?.pageIndex += 1
             finished?(repos)
         }
