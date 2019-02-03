@@ -22,15 +22,17 @@ class RepoRemoteDatasource {
     func repos(pageSize: Int, pageIndex: Int, result: @escaping GetResult) {
         
         guard let paginationUrl = URL(string: url.absoluteString + "?page=\(pageIndex + 1)&per_page=\(pageSize)") else {
+            Logger.error("Invalid repo URL")
             result([])
             return
         }
         
-        print(paginationUrl)
+        Logger.debug("Fetching: \(paginationUrl)")
         
         Alamofire.request(paginationUrl).responseJSON { response in
             
             guard response.result.isSuccess, let json = response.data else {
+                Logger.error("Failed fetching issues: \(String(describing: response.error))")
                 result([])
                 return
             }
@@ -42,6 +44,7 @@ class RepoRemoteDatasource {
                 let repos = try decoder.decode([Repo].self, from: json)
                 result(repos)
             } catch {
+                Logger.error("Failed decoding repos: \(error))")
                 result([])
             }
         }

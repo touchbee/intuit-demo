@@ -12,5 +12,8 @@ protocol RepoRepositoryProtocol {
     
     typealias GetResult = (_ repos: [Repo]) -> ()
     
-    func repos(pageSize: Int, pageIndex: Int, result: @escaping GetResult)
+    var repos: [Repo] {get}
+    
+    func firstReposPage(pageSize: Int, result: @escaping GetResult)
+    func nextReposPage(pageSize: Int, result: @escaping GetResult)
 }

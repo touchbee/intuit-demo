@@ -28,13 +28,20 @@ class UseCaseRepoListPaginated {
     init(pageSize: Int, repoRepository: RepoRepositoryProtocol) {
         self.pageSize = pageSize
         self.repoRepository = repoRepository
+        self.repos = repoRepository.repos
     }
     
     func firstPage(finished: GetResult = nil) {
         
         self.canLoadMore = true
         
-        self.repoRepository.repos(pageSize: pageSize, pageIndex: 0) { [weak self, pageSize] (repos) in
+        self.repoRepository.firstReposPage(pageSize: pageSize) { [weak self, pageSize] (repos) in
+            
+            guard pageSize > 0 && pageSize <= 100 else {
+                Logger.error("Expexting page size between 1 and 100")
+                finished?([])
+                return
+            }
             
             if repos.count == 0 || repos.count < pageSize {
                 self?.canLoadMore = false
@@ -52,7 +59,13 @@ class UseCaseRepoListPaginated {
             return
         }
         
-        self.repoRepository.repos(pageSize: pageSize, pageIndex: pageIndex) { [weak self, pageSize] (repos) in
+        self.repoRepository.nextReposPage(pageSize: pageSize) { [weak self, pageSize] (repos) in
+            
+            guard pageSize > 0 && pageSize <= 100 else {
+                Logger.error("Expexting page size between 1 and 100")
+                finished?([])
+                return
+            }
             
             if repos.count == 0 || repos.count < pageSize {
                 self?.canLoadMore = false

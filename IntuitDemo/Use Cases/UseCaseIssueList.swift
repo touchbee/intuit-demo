@@ -30,7 +30,7 @@ class UseCaseIssueList {
     
     func getIssues(finished: GetResult = nil) {
         
-        self.issueRepository.issues(repo: repo) { [weak self, finished] (issues) in
+        self.issueRepository.allIssues(repo: repo) { [weak self, finished] (issues) in
             self?.issues = issues
             finished?(issues)
         }

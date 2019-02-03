@@ -7,8 +7,6 @@
 //
 
 import Foundation
-
-import Foundation
 import Alamofire
 
 class IssueRemoteDatasource {
@@ -18,16 +16,17 @@ class IssueRemoteDatasource {
     func issues(for repo: Repo, result: @escaping GetResult) {
         
         guard let issuesUrl = repo.issuesUrl else {
+            Logger.error("Missing issues URL")
             result([])
             return
         }
         
-        print(issuesUrl)
+        Logger.debug("Fetching: \(issuesUrl)")
         
         Alamofire.request(issuesUrl).responseJSON { response in
             
             guard response.result.isSuccess, let json = response.data else {
-                log.error("Missing issues URL")
+                Logger.error("Failed fetching issues: \(String(describing: response.error))")
                 result([])
                 return
             }
@@ -39,6 +38,7 @@ class IssueRemoteDatasource {
                 let issues = try decoder.decode([Issue].self, from: json)
                 result(issues)
             } catch {
+                Logger.error("Failed decoding issues: \(error))")
                 result([])
             }
         }

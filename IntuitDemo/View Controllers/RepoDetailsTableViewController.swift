@@ -35,7 +35,7 @@ class RepoDetailsTableViewController: UITableViewController {
         dateFormatter.timeStyle = .none
         
         detailsInfo.append((label:"Full Name", content:repo.fullName))
-        detailsInfo.append((label:"Language", content:repo.language))
+        detailsInfo.append((label:"Language", content:repo.language ?? "Unknown"))
         detailsInfo.append((label:"Created", content:dateFormatter.string(from: repo.created)))
         detailsInfo.append((label:"Watcher count", content:String(repo.watchersCount)))
         detailsInfo.append((label:"Fork count", content:String(repo.forkCount)))

@@ -17,7 +17,7 @@ struct Repo : Codable {
     let issuesCount: Int
     let forkCount: Int
     let description: String
-    let language: String
+    let language: String?
     let created: Date
     let issuesUrlPath: String
     

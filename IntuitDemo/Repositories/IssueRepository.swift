@@ -19,7 +19,7 @@ class IssueRepository : IssueRepositoryProtocol {
         self.remoteDataSource = IssueRemoteDatasource()
     }
     
-    func issues(repo: Repo, result: @escaping GetResult) {
+    func allIssues(repo: Repo, result: @escaping GetResult) {
         
         if let issues = issues[repo.id] {
             result(issues)

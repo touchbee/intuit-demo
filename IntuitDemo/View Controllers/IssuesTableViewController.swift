@@ -28,7 +28,7 @@ class IssuesTableViewController: UITableViewController {
         useCaseIssueList.issuesChanged = { [weak self] (issues) in
             self?.tableView.reloadData()
         }
-        
+    
         useCaseIssueList.getIssues()
     }
     

@@ -11,6 +11,6 @@ import Foundation
 protocol IssueRepositoryProtocol {
     
     typealias GetResult = (_ issues: [Issue]) -> ()
-    
-    func issues(repo: Repo, result: @escaping GetResult)
+        
+    func allIssues(repo: Repo, result: @escaping GetResult)
 }
