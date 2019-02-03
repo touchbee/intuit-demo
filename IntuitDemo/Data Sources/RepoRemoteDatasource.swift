@@ -21,7 +21,7 @@ class RepoRemoteDatasource {
     
     func repos(pageSize: Int, pageIndex: Int, result: @escaping GetResult) {
         
-        guard let paginationUrl = URL(string: url.absoluteString + "?page=\(pageIndex)&per_page=\(pageSize)") else {
+        guard let paginationUrl = URL(string: url.absoluteString + "?page=\(pageIndex + 1)&per_page=\(pageSize)") else {
             result([])
             return
         }

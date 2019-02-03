@@ -13,6 +13,7 @@ class RepoRepository : RepoRepositoryProtocol {
     typealias GetResult = (_ repos: [Repo]) -> ()
     
     var remoteDataSource: RepoRemoteDatasource
+    var repos: [Repo] = []
     
     init(url: URL) {
         self.remoteDataSource = RepoRemoteDatasource(url: url)

@@ -30,43 +30,9 @@ class UseCaseIssueList {
     
     func getIssues(finished: GetResult = nil) {
         
-        self.issueRepository.issues(repo: repo) { [finished] (issues) in
-            self.issues = issues
+        self.issueRepository.issues(repo: repo) { [weak self, finished] (issues) in
+            self?.issues = issues
             finished?(issues)
         }
     }
-    
-    /*
-    func firstPage(finished: GetResult = nil) {
-        
-        self.repoRepository.repos(pageSize: pageSize, pageIndex: 1) { [weak self, pageSize] (repos) in
-            
-            if repos.count == 0 || repos.count < pageSize {
-                self?.canLoadMore = false
-            }
-            
-            self?.repos = repos
-            self?.pageIndex = 2
-            finished?(repos)
-        }
-    }
-    
-    func nextPage(finished: GetResult = nil) {
-        
-        if !canLoadMore {
-            return
-        }
-        
-        self.repoRepository.repos(pageSize: pageSize, pageIndex: pageIndex) { [weak self, pageSize] (repos) in
-            
-            if repos.count == 0 || repos.count < pageSize {
-                self?.canLoadMore = false
-            }
-            
-            self?.repos += repos
-            self?.pageIndex += 1
-            finished?(repos)
-        }
-    }
- */
 }

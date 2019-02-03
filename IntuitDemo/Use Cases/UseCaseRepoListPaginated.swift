@@ -32,14 +32,16 @@ class UseCaseRepoListPaginated {
     
     func firstPage(finished: GetResult = nil) {
         
-        self.repoRepository.repos(pageSize: pageSize, pageIndex: 1) { [weak self, pageSize] (repos) in
+        self.canLoadMore = true
+        
+        self.repoRepository.repos(pageSize: pageSize, pageIndex: 0) { [weak self, pageSize] (repos) in
             
             if repos.count == 0 || repos.count < pageSize {
                 self?.canLoadMore = false
             }
             
             self?.repos = repos
-            self?.pageIndex = 2
+            self?.pageIndex = 1
             finished?(repos)
         }
     }
